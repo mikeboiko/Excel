@@ -1,4 +1,13 @@
 ' ===
+' Author(s): Travis Gall and Mike Boiko
+' Description: Backup all vba macros in the current application. The subroutine
+'              "Workbook_BeforeSave" will run automatically when the project containing
+'              the macro is saved.
+' ===
+
+' TODO [161215] - Create a subroutine or function capable of importing a previous backup into the current project
+
+' ===
 ' Install
 ' ===
 
@@ -7,12 +16,20 @@
 '   -> Tools>References
 '   -> Find "... 5.x" and check to enable
 '   -> "OK"
+' - Enable "Programmatic access to Office VBA project"
+'   -> Open Office application settings
+'   -> Navigate to "Trust Center/Trust Center Settings"
+'   -> Within "Macro Settings" enable "Trust access to the VBA project object model"
 '
 ' In order for auto-save Macro to work, Application.EnableEvents needs to be True
 
-Private Const CODE_START_LINE_DEFAULT = 1
+' ===
+' Constants
+' ===
 
-Option Explicit
+Private Const CODE_START_LINE_DEFAULT = 1
+Private Const VBA_FOLDER = "/vba/"
+Private Const VBA_EXTENSION = ".vba"
 
 ' Triggered automatically on user save event and used to create a backup of the current workbook's vba as plain-text
 Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean)
@@ -26,48 +43,48 @@ Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean)
     ' Enable/disable debugging here
     DebugEnabled = False
 
-
     ' ===
     ' Main
     ' ===
 
-    ' Define types
+    ' Define variable types
     Dim Code As CodeModule
     Dim CodeLine As Long
     Dim CodeLineCount As Long
     Dim FilePath As String
     Dim FolderPath As String
-    Dim modName As String
-    Dim wb As Workbook
-    Dim l As Long
-    Dim modFile As Variant
+    Dim ModuleFile As VBComponent
+    Dim ModuleName As String
     
-    Set wb = ThisWorkbook
-
-    ' Go through each module in the workbook
-    For Each modFile In wb.VBProject.VBComponents
-        
+    ' TODO [161215] - Clean up old vba backups prior to saving the current modules
+    
+    ' Get current workbook path
+    FolderPath = Application.ActiveWorkbook.Path & VBA_FOLDER
+    
+    ' Skip current module if empty
+    If Dir(FolderPath, vbDirectory) = "" Then MkDir FolderPath
+    
+    ' ---
+    ' Modules
+    ' ---
+    
+    ' Loop through each module in the current workbook
+    For Each ModuleFile In ActiveWorkbook.VBProject.VBComponents
         ' ---
         ' Read
         ' ---
         
-        ' Get name of current module and assign to Code
-        modName = modName & vbCr & modFile.Name
-        Set Code = modFile.CodeModule
+        ' Get the code object from the current module in the loop
+        Set Code = ModuleFile.CodeModule
         
         ' Number of lines in the code
         CodeLineCount = Code.CountOfLines()
         
         ' No need to write blank modules
-        If CodeLineCount = 0 Then GoTo NextModule
-        
-        'If vba subfolder doesn't exist, create it
-        FolderPath = Application.ActiveWorkbook.Path & "/vba/"
-        If Dir(FolderPath, vbDirectory) = "" Then MkDir FolderPath
+        If CodeLineCount < CODE_START_LINE_DEFAULT Then GoTo NextModule
         
         ' Filepath of current module
-        FilePath = Application.ActiveWorkbook.Path & "/vba/" & Code.Name & ".vba"
-        
+        FilePath = FolderPath & Code.Name & VBA_EXTENSION
         
         ' ---
         ' Write
@@ -84,17 +101,9 @@ Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean)
             ' Display the output of the current module
             Debug.Print Code.Lines(CODE_START_LINE_DEFAULT, CodeLineCount)
         End If
-        
-        modName = "" ' Needs to be initialized for next module
             
-NextModule: 'Skip to this label when CodeLineCount = 0
+' Skip to this label when CodeLineCount < CODE_START_LINE_DEFAULT
+NextModule:
         
-    Next modFile
-
-    Set wb = Nothing
-
-End Sub
-
-
-
-
+    Next ModuleFile
+End Sub ' Workbook_BeforeSave
