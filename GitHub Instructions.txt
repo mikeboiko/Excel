@@ -1,0 +1,6 @@
+git pull : Pull from GitHub server, then change code
+git status : Show current change log, etc...
+git add . : Adds all current modifications to staged commit
+git add .\'path' : Just add individual folders/files to staged commit
+git commit -m "comment" : Commit with comment. Use heading: then details (good practice)`
+git push: Push to GitHub server
