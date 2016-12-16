@@ -1,3 +1,5 @@
+Instructions:
+
 git pull : Pull from GitHub server, then change code
 git status : Show current change log, etc...
 git add . : Adds all current modifications to staged commit
