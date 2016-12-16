@@ -1,4 +1,3 @@
-' By Mike Boiko and Travis Gall
 ' ===
 ' Install
 ' ===
@@ -93,9 +92,6 @@ NextModule: 'Skip to this label when CodeLineCount = 0
     Next modFile
 
     Set wb = Nothing
-
-
-
 
 End Sub
 
