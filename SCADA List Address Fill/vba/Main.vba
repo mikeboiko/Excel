@@ -171,12 +171,28 @@ End Function
 
 
 'For Testing
-Sub TestMacro()
 
-FirstCol = 10
-For Col = FirstCol To FirstCol + 3 Step 3
-    Debug.Print Col
+Sub GetModules()
+Dim modName As String
+Dim wb As Workbook
+Dim l As Long
+
+Set wb = ThisWorkbook
+
+'For l = 1 To wb.VBProject.VBComponents.Count
+'    With wb.VBProject.VBComponents(l)
+'        modName = modName & vbCr & .Name
+'    End With
+'Next
+
+For Each modFile In wb.VBProject.VBComponents
+    With modFile
+        modName = modName & vbCr & .Name
+    End With
 Next
 
-End Sub
+MsgBox "Module Names:" & modName
 
+Set wb = Nothing
+
+End Sub
