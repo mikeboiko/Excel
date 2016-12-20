@@ -10,3 +10,7 @@ git add .\'path' : Just add individual folders/files to staged commit
 git commit -m "comment" : Commit with comment. Use heading: then details (good practice)`
 git commit -am "comment" : Add all modifications and commit with comment. Use heading: then details (good practice)`
 git push: Push to GitHub server
+
+git checkout .\'path' : Used to pull old versions of code to local copy
+git add -u . : Stage all files (including deleted) files
+git log --follow .\'path': Show the history on a file even when the name has changed

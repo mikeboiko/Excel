@@ -165,34 +165,3 @@ ReturnArray(2) = StrBit 'SBit
 WordBitIncrement = ReturnArray
 
 End Function
-
-
-
-
-
-'For Testing
-
-Sub GetModules()
-Dim modName As String
-Dim wb As Workbook
-Dim l As Long
-
-Set wb = ThisWorkbook
-
-'For l = 1 To wb.VBProject.VBComponents.Count
-'    With wb.VBProject.VBComponents(l)
-'        modName = modName & vbCr & .Name
-'    End With
-'Next
-
-For Each modFile In wb.VBProject.VBComponents
-    With modFile
-        modName = modName & vbCr & .Name
-    End With
-Next
-
-MsgBox "Module Names:" & modName
-
-Set wb = Nothing
-
-End Sub
