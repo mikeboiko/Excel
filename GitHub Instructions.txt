@@ -1,16 +1,21 @@
 Instructions for GitHub:
 
-wmic: Make terminal full screen
-
 git pull : Pull from GitHub server, then change code
 git status : Show current change log, etc...
-git diff: See changes/discrepancies
+git diff: See changes/discrepancies. Press q to escape this mode.
 git add . : Adds all current modifications to staged commit
 git add .\'path' : Just add individual folders/files to staged commit
+git add -u . : Stage all files (including deleted) files
 git commit -m "comment" : Commit with comment. Use heading: then details (good practice)`
 git commit -am "comment" : Add all modifications and commit with comment. Use heading: then details (good practice)`
 git push: Push to GitHub server
 
-git checkout .\'path' : Used to pull old versions of code to local copy
-git add -u . : Stage all files (including deleted) files
 git log --follow .\'path': Show the history on a file even when the name has changed
+
+Creating/Merging New branches
+git branch testing : Create new branch
+git checkout testing' : Used to switch branches or get old code into current directory
+***** Perform changes on testing branch and perform commits*********
+git checkout master : Go back into master branch
+git merge testing : Merge the 2 branches
+git branch -d testing : Delete testing branch
