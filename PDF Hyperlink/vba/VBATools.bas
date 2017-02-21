@@ -59,7 +59,7 @@ Public Sub VBABackup()
         ' ---
         ' Get the code object from the current module in the loop
         Set Code = ModuleFile.CodeModule
-
+        
         ' Number of lines in the code
         CodeLineCount = Code.CountOfLines()
 
@@ -100,18 +100,18 @@ Public Sub VBARestore()
     Dim ImportFile As Variant
     Dim ActiveComponents As VBComponents
     Dim CurrentComponent As VBComponent
-
+    
     ' Get ActiveWorkbook Path
     FolderPath = ActiveWorkbook.Path & VBA_FOLDER
-
+    
     ' Get ActiveWorkbook.VBProject VBComponents
     Set ActiveComponents = ActiveWorkbook.VBProject.VBComponents
-
+    
     ' Skip current module if empty
     If Dir(FolderPath, vbDirectory) = "" Then
         MkDir FolderPath
     End If
-
+    
     ' Loop through all files in the FolderPath
     ImportFile = Dir(FolderPath)
     While (ImportFile <> "")
