@@ -47,7 +47,9 @@ Temporary Items
 .apdisk
 SCADA List Address Fill/~$PPL006-001 LAG P3 SCADA - IFR rev B.xlsm
 
+# =========================
 # Custom
+# =========================
 *.swp
 *.xlsx
 *.xlsm
